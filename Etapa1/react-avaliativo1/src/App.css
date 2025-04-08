@@ -1,0 +1,28 @@
+.App {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.product-list {
+  display: flex;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.product-card button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.product-card button:hover {
+  background-color: #45a049;
+}

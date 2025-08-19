@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { Appearance, ColorSchemeName } from "react-native";
 
-// Definir tema
 const lightTheme = {
   colors: {
     background: "#FFFFFF",

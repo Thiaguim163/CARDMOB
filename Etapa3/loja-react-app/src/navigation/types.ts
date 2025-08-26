@@ -11,3 +11,18 @@ export type RootStackParamList = {
   Details: { itemId: number };
   Login: undefined;
 }
+
+export type RootTabParamList = {
+  Home: undefined;
+  Settings: undefined
+}
+
+export type AuthTabParamList = {
+ Home: undefined;
+ Settings: undefined
+}
+
+export type AuthStackParamList = {
+  Tabs: NavigatorScreenParams<AuthTabParamList>
+  Details: { itemId: number}
+} 

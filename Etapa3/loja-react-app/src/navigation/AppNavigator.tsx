@@ -1,19 +1,34 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { RootStackParamList, TabParamList } from "./types";
-
+import { FontAwesome } from "@expo/vector-icons"; // Certifique-se de ter instalado o pacote
 import HomeScreen from "../screens/HomeScreen";
-
 import RegisterScreen from "../screens/RegisterScreen";
-import LoginScreen from "../screens/LoginScreen";
+import { RootStackParamList, TabParamList } from "../types/navigation";
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
 function TabNavigator() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, focused, size }) => {
+          let iconName;
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "cog" : "cog";
+          } else if (route.name === "Register") {
+            iconName = focused ? "user-plus" : "user-plus";
+          }
+          return <FontAwesome name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: "red",
+        tabBarInactiveTintColor: "grey",
+        headerShown: false,
+      })}
+    >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Settings" component={HomeScreen} />
       <Tab.Screen name="Register" component={RegisterScreen} />
@@ -29,23 +44,8 @@ function StackNavigator() {
         component={TabNavigator}
         options={{ headerShown: false }}
       />
-      <AppStack.Screen
-        name="Details"
-        component={HomeScreen}
-        options={{ title: "Detalhes" }}
-      />
-      <AppStack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ title: "Acessar" }}
-      />
     </AppStack.Navigator>
   );
 }
 
-export default function AppNavigator() {
-  return (
-
-      <StackNavigator />
-  );
-}
+export default StackNavigator;

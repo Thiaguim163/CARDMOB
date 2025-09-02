@@ -1,6 +1,12 @@
-import React, { use, useState } from "react";
-import { View, TextInput, Button, StyleSheet, Text } from "react-native";
-
+import React, { useState } from "react";
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Text,
+  SafeAreaView,
+} from "react-native";
 import { fakeLogin } from "../services/authService";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -12,37 +18,37 @@ export default function LoginScreen({ navigation }: any) {
 
   const handleLogin = async () => {
     try {
-     const token = await fakeLogin(email, password);
-     login(token)
-      console.log("Login ok");
+      // Lógica de login / conexão com backend.
+      const token = await fakeLogin(email, password);
+      login(token);
+      console.log("Login realizado com sucesso");
     } catch (err: any) {
-      setError(err);
+      setError("Erro ao realizar login. Verifique suas credenciais.");
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Email:</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-      />
-      <Text>Senha:</Text>
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
-      <Button title="Entrar" onPress={handleLogin} />
-      <Button
-        title="Registrar"
-        onPress={() => navigation.navigate("Register")}
-      />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Text>Email:</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
+        <Text>Senha:</Text>
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+        <Button title="Login" onPress={handleLogin} />
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -50,12 +56,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 20,
+    padding: 16,
+    backgroundColor: "#fff",
   },
   input: {
-    borderWidth: 1,
+    height: 40,
     borderColor: "#ccc",
-    padding: 8,
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+  },
+  error: {
+    color: "red",
     marginBottom: 12,
   },
 });

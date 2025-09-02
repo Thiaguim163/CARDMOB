@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import {
   View,
   TextInput,
@@ -7,7 +7,8 @@ import {
   Text,
   SafeAreaView,
 } from "react-native";
-import { fakeLogin } from "../services/authService";
+
+import { requestLogin } from "../services/authService";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginScreen({ navigation }: any) {
@@ -19,11 +20,11 @@ export default function LoginScreen({ navigation }: any) {
   const handleLogin = async () => {
     try {
       // Lógica de login / conexão com backend.
-      const token = await fakeLogin(email, password);
+      const token = await requestLogin(email, password);
       login(token);
-      console.log("Login realizado com sucesso");
+      console.log("Login ok");
     } catch (err: any) {
-      setError("Erro ao realizar login. Verifique suas credenciais.");
+      setError(err);
     }
   };
 
@@ -36,7 +37,6 @@ export default function LoginScreen({ navigation }: any) {
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
-          keyboardType="email-address"
         />
         <Text>Senha:</Text>
         <TextInput
@@ -45,8 +45,12 @@ export default function LoginScreen({ navigation }: any) {
           onChangeText={setPassword}
           secureTextEntry
         />
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-        <Button title="Login" onPress={handleLogin} />
+        {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+        <Button title="Entrar" onPress={handleLogin} />
+        <Button
+          title="Registrar"
+          onPress={() => navigation.navigate("Register")}
+        />
       </View>
     </SafeAreaView>
   );
@@ -56,19 +60,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 16,
-    backgroundColor: "#fff",
+    padding: 20,
   },
   input: {
-    height: 40,
-    borderColor: "#ccc",
     borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-    borderRadius: 4,
-  },
-  error: {
-    color: "red",
+    borderColor: "#ccc",
+    padding: 8,
     marginBottom: 12,
   },
 });

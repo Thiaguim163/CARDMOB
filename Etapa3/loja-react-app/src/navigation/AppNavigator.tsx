@@ -1,10 +1,16 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { FontAwesome } from "@expo/vector-icons"; // Certifique-se de ter instalado o pacote
+
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+
+import { RootStackParamList, TabParamList } from "./types";
+
+
 import HomeScreen from "../screens/HomeScreen";
+
 import RegisterScreen from "../screens/RegisterScreen";
-import { RootStackParamList, TabParamList } from "../types/navigation";
+import LoginScreen from "../screens/LoginScreen";
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -12,15 +18,11 @@ const Tab = createBottomTabNavigator<TabParamList>();
 function TabNavigator() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={({ route, navigation }) => ({
         tabBarIcon: ({ color, focused, size }) => {
           let iconName;
           if (route.name === "Home") {
             iconName = focused ? "home" : "home";
-          } else if (route.name === "Settings") {
-            iconName = focused ? "cog" : "cog";
-          } else if (route.name === "Register") {
-            iconName = focused ? "user-plus" : "user-plus";
           }
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
@@ -44,8 +46,20 @@ function StackNavigator() {
         component={TabNavigator}
         options={{ headerShown: false }}
       />
+      <AppStack.Screen
+        name="Details"
+        component={HomeScreen}
+        options={{ title: "Detalhes" }}
+      />
+      <AppStack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ title: "Acessar" }}
+      />
     </AppStack.Navigator>
   );
 }
 
-export default StackNavigator;
+export default function AppNavigator() {
+  return <StackNavigator />;
+}

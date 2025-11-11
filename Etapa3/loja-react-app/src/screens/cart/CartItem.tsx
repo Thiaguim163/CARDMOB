@@ -4,7 +4,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useShop } from "../../contexts/ShopContext";
 
 const CartItem = ({ item }: any) => {
-  // @todo implementar o context para persistir dados do carrinho.
   const { addToCart, removeFromCart } = useShop();
 
   const handleRemove = (item: any) => {

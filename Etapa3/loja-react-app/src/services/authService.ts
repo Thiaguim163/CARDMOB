@@ -1,8 +1,6 @@
-import Constants from 'expo-constants'; // novo
+import Constants from 'expo-constants';
 
-// const API_URL = Config.API_URL;
-// const API_URL = 'http://10.81.205.50:5000';
-const { apiUrl } = Constants.expoConfig?.extra || {}; // novo
+const { apiUrl } = Constants.expoConfig?.extra || {};
 
 export async function fakeLogin(email: string, password: string): Promise<string> {
     if (email === 'teste@example.com' && password === '123') {
@@ -12,9 +10,9 @@ export async function fakeLogin(email: string, password: string): Promise<string
 }
 
 export async function requestLogin(email: string, password: string): Promise<string> {
-    console.log(apiUrl); // alterado
+    console.log(apiUrl);
     try {
-        // alterado 
+        
         const response = await fetch(`${apiUrl}/api/users/login`, {
             method: 'POST',
             headers: {
@@ -30,14 +28,13 @@ export async function requestLogin(email: string, password: string): Promise<str
     catch (error) {
         console.error(error);
         return Promise.reject(error);
-        // return Promise.reject('Credenciais inválidas');
+  
     }
 }
 
-// dupliquei o requestLogin, renomeie e inclui o name nos argumentos.
 export async function requestRegister(name: string, email: string, password: string): Promise<string> {
     try {
-        const response = await fetch(`${apiUrl}/api/users`, { // modifiquei o endpoint
+        const response = await fetch(`${apiUrl}/api/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,6 +49,20 @@ export async function requestRegister(name: string, email: string, password: str
     catch (error) {
         console.error(error);
         return Promise.reject(error);
-        // return Promise.reject('Credenciais inválidas');
+    }
+}
+
+export async function getTokenData(token: string | null): Promise<any[]> {
+    try {
+        if (!token) {
+            return [];
+        }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(base64));
+        return payload;
+    } catch (error) {
+        console.error(error);
+        return Promise.reject('Token inválido.');
     }
 }
